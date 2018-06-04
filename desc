@@ -1,0 +1,16 @@
+import requests ; from bs4 import BeautifulSoup
+
+
+response = requests.get("http://www.google.com/search?q=Excel ")
+soup = BeautifulSoup(response.text,"lxml")
+
+for result in soup.select('#ires .g'):
+    footer = result.select_one('.s .st')
+
+    if not footer:
+        # means we're in a div for query images, skipping
+        continue
+
+    headline = result.select_one('.r a').text
+    description = footer.text
+    print(headline, description)
